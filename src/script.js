@@ -60,8 +60,8 @@ let dataView = null;
 	document.body.addEventListener("keydown", keyDown);
 	window.addEventListener("wheel", wheel);
 	window.addEventListener("resize", e => {
-		canvas.width = window.innerWidth;
-		canvas.height = window.innerHeight - cellSizeY;
+		canvas.width = document.documentElement.clientWidth;
+		canvas.height = document.documentElement.clientHeight - canvas.getBoundingClientRect().top;
 		dumpFile(data);
 	});
 
@@ -534,12 +534,12 @@ function installProgressiveWebApp() {
 
 		window.addEventListener('load', e => {
 			navigator.serviceWorker.register('/hexdump/sw.js')
-			.then(registration => {
-				console.log('ServiceWorker registered successfully');
-			})
-			.catch(err => {
-				console.dir(err);
-			});
+				.then(registration => {
+					console.log('ServiceWorker registered successfully');
+				})
+				.catch(err => {
+					console.dir(err);
+				});
 		});
 
 		window.addEventListener('beforeinstallprompt', e => {
@@ -547,20 +547,20 @@ function installProgressiveWebApp() {
 			deferredPrompt = e;
 
 			deferredPrompt.prompt()
-			.catch(err => {
-				console.dir(err);
-			});
+				.catch(err => {
+					console.dir(err);
+				});
 
 			deferredPrompt.userChoice
-			.then(result => {
-				if (result.outcome === "accepted") {
-					alert("HexDump added to home screen");
-				} else {
-					alert("HexDump isn't added to home screen 😪");
-				}
+				.then(result => {
+					if (result.outcome === "accepted") {
+						alert("HexDump added to home screen");
+					} else {
+						alert("HexDump isn't added to home screen 😪");
+					}
 
-				deferredPrompt = null;
-			});
+					deferredPrompt = null;
+				});
 		});
 	}
 }
